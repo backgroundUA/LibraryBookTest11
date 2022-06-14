@@ -3,7 +3,7 @@ using System;
 
 namespace LibraryBookTest11.BookLibrary.Logic
 {
-    internal class IssuedBooks : IIssuedBook
+    public class IssuedBooks : IIssuedBook
     {
         public ILibrarian Librarian { get; set; }
         public IBook Book { get; set; }

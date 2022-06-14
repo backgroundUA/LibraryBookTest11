@@ -2,52 +2,47 @@
 using LibraryBookTest11.BookLibrary.Logic;
 using static LibraryBookTest11.View.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Collections;
 using LibraryBookTest11.BookLibrary.Data.Memory;
+using LibraryBookTest11.LibraryBook.Settings;
+using System.Collections.Generic;
 
 namespace LibraryBookTest11
 {
     partial class Program
     {
-
+        private static Configuration _configuration;
         private static IBook CreateBook(string title, string author, string genre, int year)
         {
-            var book = new Book
-            {
-                Title = title,
-                Author = author,
-                Genre = genre,
-                Year = year
-            };
+            var book = _configuration.Container.GetInstance<IBook>();
+            book.Title = title;
+            book.Author = author;
+            book.Genre = genre;
+            book.Year = year;
+
+            var librarian = _configuration.Container.GetInstance<ILibrarian>();
+
+            librarian.Add(book);
+
             return book;
         }
 
-        private static IIssuedBook CreateIssuedBook(ILibrarian librarian, IBook book, IReader reader)
+        private static IIssuedBook CreateIssuedBook(ILibrarian librarian, IBook book)
         {
-            var issuedBook = new IssuedBooks
-            {
-                Librarian = librarian,
-                Book = book,
-                Reader = reader,
-                DateTime = DateTime.Now,
+            var library = _configuration.Container.GetInstance<ILibrarian>();
+            var issuedBook = library.GiveBook(book);
 
-            };
+
             return issuedBook;
         }
 
         private static ILibrarian CreateLibrarian(string name)
         {
-            var bookData = new BookMemoryData();
-            var issuedData = new IssuedBookMemoryData();
+            var library = _configuration.Container.GetInstance<ILibrarian>();
+            library.Name = name;
 
-            var librarian = new Librarian(bookData, issuedData)
-            {
-                Name = name,
-            };
-            return librarian;
+            return library;
         }
 
         private static IReader CreateReader(string name)
@@ -59,6 +54,13 @@ namespace LibraryBookTest11
             return reader;
         }
 
+        private static IEnumerable<IBook> GetAllBooks()
+        {
+            var librarian = _configuration.Container.GetInstance<ILibrarian>();
+            var books = librarian.GetAllBook();
+
+            return (IEnumerable<IBook>)books;
+        }
 
 
 
@@ -67,6 +69,8 @@ namespace LibraryBookTest11
 
             try
             {
+                _configuration = new Configuration();
+
                 var librarian = CreateLibrarian("Зоя");
 
                 Console.OutputEncoding = Encoding.UTF8;
@@ -97,7 +101,7 @@ namespace LibraryBookTest11
                             GiveBook(librarian);
                             break;
                         default:
-                            WriteErrorMessage("Не обрабатываемая команда. Свяжитесь с разработчиком");
+                            WriteErrorMessage("Не обрабатываемая команда");
                             break;
                     }
                 }
@@ -160,11 +164,10 @@ namespace LibraryBookTest11
                 WriteErrorMessage("Данная книга не найдена");
             }
 
-            var issuedBook = CreateIssuedBook(librarian, book, CreateReader("Жора"));
+            var issuedBook = CreateIssuedBook(librarian, book);
             Console.WriteLine($"Название книги: {issuedBook.Book.Title}");
             Console.WriteLine($"Год книги: {issuedBook.Book.Year}");
             Console.WriteLine($"Книгу выдал; {issuedBook.Librarian.Name}");
-            Console.WriteLine($"Читатель: {CreateReader("Жора")}");
             Console.WriteLine($"{issuedBook.DateTime}");
             Console.WriteLine();
 

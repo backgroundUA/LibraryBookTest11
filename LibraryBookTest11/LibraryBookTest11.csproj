@@ -42,6 +42,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="SimpleInjector, Version=5.0.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.5.3.3\lib\net461\SimpleInjector.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -64,13 +67,18 @@
     <Compile Include="BookLibrary.Logic\IssuedBooks.cs" />
     <Compile Include="BookLibrary.Logic\Librarian.cs" />
     <Compile Include="BookLibrary.Logic\Reader.cs" />
+    <Compile Include="BookLibrary.Sql\BookEntity.cs" />
+    <Compile Include="BookLibrary.Sql\BookSqlData.cs" />
     <Compile Include="BookLibrary.Sql\db.cs" />
+    <Compile Include="BookLibrary.Sql\IssuedBookSqlData.cs" />
+    <Compile Include="BookLibrary.Sql\IssuedEntity.cs" />
+    <Compile Include="LibraryBook.Settings\Configuration.cs" />
     <Compile Include="View\Enum.cs" />
-    <Compile Include="Migrations\202206130725546_createDataBase.cs" />
-    <Compile Include="Migrations\202206130725546_createDataBase.designer.cs">
+    <Compile Include="LibraryBook.Settings\Migrations\202206130725546_createDataBase.cs" />
+    <Compile Include="LibraryBook.Settings\Migrations\202206130725546_createDataBase.designer.cs">
       <DependentUpon>202206130725546_createDataBase.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="LibraryBook.Settings\Migrations\Configuration.cs" />
     <Compile Include="View\Helpers.cs" />
     <Compile Include="View\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,9 +86,10 @@
   <ItemGroup>
     <None Include="BookLibrary.Sql\App.config" />
     <None Include="BookLibrary.Sql\packages.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202206130725546_createDataBase.resx">
+    <EmbeddedResource Include="LibraryBook.Settings\Migrations\202206130725546_createDataBase.resx">
       <DependentUpon>202206130725546_createDataBase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
